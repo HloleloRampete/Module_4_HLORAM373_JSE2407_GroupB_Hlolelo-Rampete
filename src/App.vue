@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <!-- The Navbar will persist across all pages -->
-    <NavBar />
+    <Navbar />
     <!-- The router-view will display the component corresponding to the current route -->
     <router-view />
   </div>
 </template>
 
 <script>
-import NavBar from "./components/NavBar.vue";
+import Navbar from './components/Navbar.vue';
 
 export default {
   components: {
-    NavBar,
+    Navbar,
   },
 };
 </script>
