@@ -12,11 +12,17 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import Navbar from '../components/Navbar.vue'
+import useProducts from '@/composables/useProducts';
 
 export default {
     components: {
         Navbar,
     },
+    setup() {
+        const { products } = useProducts();
+        return { products };
+        },
 };
 </script>
