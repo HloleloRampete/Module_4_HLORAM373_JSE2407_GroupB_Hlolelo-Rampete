@@ -1,11 +1,17 @@
 <template>
     <div>
-        <Header />
+        <Navbar />
         <h1>Home</h1>
         <!-- Add product listing here -->
     </div>
 </template>
 
 <script>
-import Header from '../components/Header.vue'
+import Navbar from '../components/Navbar.vue'
+
+export default {
+    components: {
+        Navbar,
+    },
+};
 </script>
