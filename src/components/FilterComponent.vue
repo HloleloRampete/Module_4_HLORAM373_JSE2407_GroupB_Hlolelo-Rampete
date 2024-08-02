@@ -19,3 +19,23 @@
     />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    categories: Array,
+    onFilter: Function,
+  },
+  data() {
+    return {
+      selectedCategory: "",
+      searchQuery: "",
+    };
+  },
+  methods: {
+    filterProducts() {
+      this.onFilter(this.selectedCategory, this.searchQuery);
+    },
+  },
+};
+</script>
