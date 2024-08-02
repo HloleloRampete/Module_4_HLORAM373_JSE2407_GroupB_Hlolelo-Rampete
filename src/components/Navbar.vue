@@ -1,7 +1,7 @@
 <template>
     <nav class="bg-gray-800 p-4 flex justify-between items-center">
       <div class="text-white font-bold text-xl">
-        <router-link to="/">MyStore</router-link>
+        <router-link to="/">SwiftCart</router-link>
       </div>
       <div class="flex space-x-4">
         <router-link to="/wishlist" class="text-white">Wishlist</router-link>
