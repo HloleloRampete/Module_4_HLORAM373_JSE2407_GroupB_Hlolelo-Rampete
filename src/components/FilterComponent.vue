@@ -88,16 +88,14 @@
   export default {
     components: { Error },
     setup() {
-      const categories = ref(['Category 1', 'Category 2', 'Category 3']); // Example categories
-      const error = ref(null);
+      const { categories, error, filterItem, setFilterItem, searchTerm, setSearchTerm, fetchProducts } = useProductStore();
       const isDropdownVisible = ref(false);
-      const { fetchProducts, searchProducts, filterItem, setFilterItem, searchTerm, setSearchTerm } = useProductStore();
   
       onMounted(async () => {
         try {
           await fetchProducts();
         } catch (err) {
-          error.value = err.message;
+          console.error("Error fetching products:", err);
         }
       });
   
@@ -108,14 +106,13 @@
       const handleFilter = (category) => {
         setFilterItem(category);
         isDropdownVisible.value = false;
-        fetchProducts();
       };
   
       const handleSearch = () => {
-        searchProducts(searchTerm.value);
+        setSearchTerm(searchTerm.value);
       };
   
-      return { categories, error, isDropdownVisible, filterItem, searchTerm, toggleDropdown, handleFilter, handleSearch };
+      return { categories, error, filterItem, searchTerm, isDropdownVisible, toggleDropdown, handleFilter, handleSearch };
     }
   };
   </script>
