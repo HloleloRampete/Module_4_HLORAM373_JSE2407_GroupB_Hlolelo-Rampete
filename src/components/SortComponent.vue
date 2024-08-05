@@ -16,7 +16,7 @@
   
   <script>
   import { ref } from 'vue';
-  import { useProductStore } from '../store/productStore';
+  import { useProductStore } from '../composables/useProducts';
   
   export default {
     setup() {
