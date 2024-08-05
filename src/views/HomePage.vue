@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start  mt-3 mx-auto justify-center">
+    <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start mt-3 mx-auto justify-center">
       <FilterComponent :categories="categories" @filter="handleFilter" />
       <SortComponent @sort="handleSort" />
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import useProducts from "@/composables/useProducts";
+import { useProductStore } from "@/composables/useProducts";
 import FilterComponent from "@/components/FilterComponent.vue";
 import SortComponent from "@/components/SortComponent.vue";
 import ProductList from "@/components/ProductList.vue";
@@ -28,7 +28,15 @@ export default {
     ProductList,
   },
   setup() {
-    const { products, categories, loading, error } = useProducts();
+    const {
+      products,
+      categories,
+      loading,
+      error,
+      fetchProducts,
+      fetchCategories,
+    } = useProductStore();
+    
     const selectedCategory = ref("");
     const searchQuery = ref("");
     const selectedSort = ref("");
