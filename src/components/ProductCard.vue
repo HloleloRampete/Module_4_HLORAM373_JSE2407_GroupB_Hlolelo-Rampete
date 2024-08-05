@@ -16,7 +16,7 @@
           </header>
           <Ratings :rate="product.rating.rate" :count="product.rating.count" />
           <div class="text-base line-clamp-2 font-extrabold text-slate-500 leading-snug">
-            <h2>\${{ product.price }}</h2>
+            <h2>${{ product.price }}</h2>
           </div>
         </div>
   
@@ -59,7 +59,7 @@
   
   <script>
   import { useRouter } from 'vue-router';
-  import Ratings from '@/components/Ratings.vue';
+  import Ratings from '@/components/RatingsComponent.vue';
   
   export default {
     name: 'ProductCard',
