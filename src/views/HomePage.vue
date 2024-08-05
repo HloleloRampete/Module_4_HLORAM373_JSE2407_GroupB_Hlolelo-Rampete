@@ -4,12 +4,7 @@
       <FilterComponent :categories="categories" @filter="handleFilter" />
       <SortComponent @sort="handleSort" />
     </div>
-    <div v-if="products.length" class="grid grid-cols-4 gap-4">
-      <div v-for="product in products" :key="product.id" class="border p-4">
-        <h2 class="text-lg">{{ product.title }}</h2>
-        <p>{{ product.price }}</p>
-      </div>
-    </div>
+    <ProductList :products="filteredProducts" />
   </div>
 </template>
 
@@ -18,11 +13,13 @@ import { ref, computed } from "vue";
 import useProducts from "@/composables/useProducts";
 import FilterComponent from "@/components/FilterComponent.vue";
 import SortComponent from "@/components/SortComponent.vue";
+import ProductList from "@/components/ProductList.vue";
 
 export default {
   components: {
     FilterComponent,
     SortComponent,
+    ProductList,
   },
   setup() {
     const { products, categories } = useProducts();
@@ -74,3 +71,4 @@ export default {
   },
 };
 </script>
+

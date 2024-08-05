@@ -9,3 +9,14 @@
     <p>No products found</p>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    products: {
+      type: Array,
+      required: true,
+    },
+  },
+};
+</script>
