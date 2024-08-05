@@ -4,7 +4,13 @@
       <FilterComponent :categories="categories" @filter="handleFilter" />
       <SortComponent @sort="handleSort" />
     </div>
-    <ProductList :products="filteredProducts" />
+    <div v-if="loading">
+      <p>Loading products...</p>
+    </div>
+    <div v-if="error">
+      <p>{{ error }}</p>
+    </div>
+    <ProductList v-else :products="filteredProducts" />
   </div>
 </template>
 
@@ -22,7 +28,7 @@ export default {
     ProductList,
   },
   setup() {
-    const { products, categories } = useProducts();
+    const { products, categories, loading, error } = useProducts();
     const selectedCategory = ref("");
     const searchQuery = ref("");
     const selectedSort = ref("");
@@ -65,10 +71,11 @@ export default {
       products,
       categories,
       filteredProducts,
+      loading,
+      error,
       handleFilter,
       handleSort,
     };
   },
 };
 </script>
-
