@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between mb-4">
+    <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start  mt-3 mx-auto justify-center">
       <FilterComponent :categories="categories" @filter="handleFilter" />
       <SortComponent @sort="handleSort" />
     </div>
