@@ -76,7 +76,7 @@
       const router = useRouter();
   
       const handleClick = () => {
-        router.push(`/products/${props.product.id}`);
+        router.push({ name: 'ProductDetail', params: { id: props.product.id } });
       };
   
       const addToFavourites = (event) => {
