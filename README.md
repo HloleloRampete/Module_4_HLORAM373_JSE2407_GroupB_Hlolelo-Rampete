@@ -481,6 +481,32 @@ const fetchProducts = async () => {
 };
 ```
 
+## Challenges Faced and Solutions
+Maintaining State Between Navigations
+
+**Challenge**: Ensuring that applied filters and sorting persisted when navigating to and from the product detail view.
+**Solution**: Implemented a global state management using Vue's Composition API within a composable (useProductStore). This ensured that the state (filters, sorting, search term) was preserved across different views without using local storage.
+Updating UI Components Based on Global State
+
+**Challenge**: The filter dropdown and sort selection would revert to their default states upon returning to the main view from the detail view.
+**Solution**: Modified the FilterComponent and SortComponent to use the state from the useProductStore composable. This ensured that the components reflected the current global state, maintaining user-selected filters and sorting options.
+Component Communication and State Management
+
+**Challenge**: Managing communication between components to ensure they were synchronized with the global state.
+**Solution**: Used Vue's emit to communicate changes from the components to the parent, and updated the global state within the useProductStore composable. This approach kept the components decoupled while maintaining consistent state.
+Fetching and Displaying Products
+
+**Challenge**: Efficiently fetching and displaying products while applying filters and sorting, and handling potential errors.
+**Solution**: Implemented a fetchProducts function within the useProductStore composable to handle data fetching. Utilized computed properties to dynamically apply filters and sorting to the fetched products, ensuring efficient and responsive data handling.
+Error Handling
+
+**Challenge**: Managing potential errors during the data fetch process and ensuring a smooth user experience.
+**Solution**: Added error handling within the fetchProducts function and displayed error messages using an ErrorComponent. This provided clear feedback to the user in case of issues.
+Dropdown and Search Functionality
+
+**Challenge**: Creating an interactive and user-friendly dropdown for category selection and a search bar.
+**Solution**: Developed a toggleable dropdown for categories and a search input within the FilterComponent. Ensured these interacted seamlessly with the global state for consistent behavior across the application.
+
 ## Future Enhancements
 
 Here are some potential enhancements that could be made to the project:
@@ -492,6 +518,7 @@ Here are some potential enhancements that could be made to the project:
 5. **Unit Tests:** Add unit tests for components and composables to ensure reliability and maintainability.
 6. **Pagination:** Implement pagination for product lists to improve performance and user experience.
 
----
+## Summary
+Throughout the project, I encountered several challenges related to state management, component communication, and user interface consistency. By leveraging Vue's Composition API and creating a centralized state management solution, I successfully addressed these challenges. The final solution ensured that filters, sorting, and search functionality were preserved across navigations, providing a smooth and intuitive user experience. The approach of using a composable for state management proved to be effective in maintaining application-wide consistency and reactivity.
 
-This documentation provides an overview of the project's setup, structure, and key components, as well as suggestions for future enhancements. By following these guidelines, you can maintain a clean and manageable codebase as you continue to develop the application.
+
