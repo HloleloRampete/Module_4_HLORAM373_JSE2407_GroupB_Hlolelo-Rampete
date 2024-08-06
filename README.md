@@ -84,6 +84,10 @@ The main dependencies for this project include:
 ### NavBar.vue
 
 The `NavBar` component is responsible for rendering the navigation bar that persists across all pages. It includes the logo, website title, and links to the Wishlist, Cart, and Login pages.
+***Updated Navbar.vue***
+1. *Use **v-show** to Toggle Navbar Visibility*: We need to conditionally display the mobile menu based on the isNavbarOpen state.
+
+2. *Bind **v-show** to the Navbar Container*: Apply v-show or v-if to the container that holds the mobile menu to show/hide it based on the isNavbarOpen state.
 
 ```vue
 <template>
@@ -257,6 +261,11 @@ export default {
 ### FilterComponent.vue
 
 The `FilterComponent` provides dropdown filtering by categories and a search option for fuzzy searches.
+1. **State Management**: The filterItem state now relies on the query parameter filter. The component reads the initial filter value from route.query.filter and updates it in the URL whenever the user selects a different filter.
+
+2. **Dropdown Handling**: The dropdown visibility is controlled with a local isDropdownVisible ref, allowing the user to toggle the visibility of filter options.
+
+3. **Filter Change**: When a filter is selected, handleFilter updates the filterItem and emits the new filter value. It also updates the query parameter in the URL using router.replace.
 
 ```vue
 <template>
@@ -296,7 +305,10 @@ export default {
 
 ### SortComponent.vue
 
-The `SortComponent` provides sorting functionality by price.
+The `SortComponent` provides sorting functionality by price. 
+1. **State Management**: The sorting state is now synchronized with the sort query parameter. The component reads the initial sorting value from route.query.sort and updates it in the URL whenever the user selects a different sorting option.
+
+2. **Sorting Change**: When the sorting option is changed, handleSort updates the sorting state and emits the new sort value. It also updates the query parameter in the URL using router.replace.
 
 ```vue
 <template>
