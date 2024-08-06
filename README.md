@@ -84,6 +84,10 @@ The main dependencies for this project include:
 ### NavBar.vue
 
 The `NavBar` component is responsible for rendering the navigation bar that persists across all pages. It includes the logo, website title, and links to the Wishlist, Cart, and Login pages.
+***Updated Navbar.vue***
+1. *Use **v-show** to Toggle Navbar Visibility*: We need to conditionally display the mobile menu based on the isNavbarOpen state.
+
+2. *Bind **v-show** to the Navbar Container*: Apply v-show or v-if to the container that holds the mobile menu to show/hide it based on the isNavbarOpen state.
 
 ```vue
 <template>
