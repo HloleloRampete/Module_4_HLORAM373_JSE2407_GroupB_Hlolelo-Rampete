@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useProductStore } from '@/composables/useProducts';
 import FilterComponent from '@/components/FilterComponent.vue';
 import SortComponent from '@/components/SortComponent.vue';
