@@ -17,6 +17,7 @@
 <script>
 import { onMounted } from 'vue';
 import { useProductStore } from '@/composables/useProducts';
+import { useFilterAndSort } from '@/composables/useFilterAndSort';
 import FilterComponent from '@/components/FilterComponent.vue';
 import SortComponent from '@/components/SortComponent.vue';
 import ProductList from '@/components/ProductList.vue';
@@ -31,17 +32,22 @@ export default {
   },
   setup() {
     const { products, loading, error, fetchProducts, filteredProducts, setFilterItem, setSearchTerm, setSorting } = useProductStore();
+    const { state: filterSortState } = useFilterAndSort();
 
     onMounted(async () => {
       await fetchProducts();
+      setFilterItem(filterSortState.filter);
+      setSorting(filterSortState.sorting);
     });
 
     const handleSort = (sortOption) => {
       setSorting(sortOption);
+      filterSortState.sorting = sortOption; // Update global state
     };
 
     const handleFilter = (filterOption) => {
       setFilterItem(filterOption);
+      filterSortState.filter = filterOption; // Update global state
     };
 
     const handleSearch = (searchTerm) => {
