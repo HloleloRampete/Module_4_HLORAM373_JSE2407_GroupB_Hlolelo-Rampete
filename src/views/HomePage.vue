@@ -1,34 +1,36 @@
 <template>
   <div>
     <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start mt-3 mx-auto justify-center">
-      <FilterComponent />
+      <FilterComponent @filter="handleFilter" @search="handleSearch" />
       <SortComponent @sort="handleSort" />
     </div>
     <div v-if="loading">
       <p>Loading products...</p>
     </div>
     <div v-if="error">
-      <p>{{ error }}</p>
+      <ErrorComponent :error="error" />
     </div>
     <ProductList v-else :products="filteredProducts" />
   </div>
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useProductStore } from '@/composables/useProducts';
 import FilterComponent from '@/components/FilterComponent.vue';
 import SortComponent from '@/components/SortComponent.vue';
 import ProductList from '@/components/ProductList.vue';
+import ErrorComponent from '@/components/ErrorComponent.vue';
 
 export default {
   components: {
     FilterComponent,
     SortComponent,
     ProductList,
+    ErrorComponent
   },
   setup() {
-    const { products, loading, error, fetchProducts, filterItem, searchTerm, sorting, setSorting } = useProductStore();
+    const { products, loading, error, fetchProducts, filteredProducts, setFilterItem, setSearchTerm, setSorting } = useProductStore();
 
     onMounted(async () => {
       await fetchProducts();
@@ -38,28 +40,13 @@ export default {
       setSorting(sortOption);
     };
 
-    const filteredProducts = computed(() => {
-      let filtered = products.value;
+    const handleFilter = (filterOption) => {
+      setFilterItem(filterOption);
+    };
 
-      if (filterItem.value !== 'All categories') {
-        filtered = filtered.filter(product => product.category === filterItem.value);
-      }
-
-      if (searchTerm.value) {
-        const query = searchTerm.value.toLowerCase();
-        filtered = filtered.filter(product =>
-          product.title.toLowerCase().includes(query)
-        );
-      }
-
-      if (sorting.value === 'low') {
-        filtered = filtered.slice().sort((a, b) => a.price - b.price);
-      } else if (sorting.value === 'high') {
-        filtered = filtered.slice().sort((a, b) => b.price - a.price);
-      }
-
-      return filtered;
-    });
+    const handleSearch = (searchTerm) => {
+      setSearchTerm(searchTerm);
+    };
 
     return {
       products,
@@ -67,6 +54,8 @@ export default {
       error,
       filteredProducts,
       handleSort,
+      handleFilter,
+      handleSearch
     };
   },
 };
