@@ -89,7 +89,7 @@ export default {
   components: { ErrorComponent },
   emits: ['filter', 'search'],
   setup(props, { emit }) {
-    const { categories, error, filterItem, setFilterItem, searchTerm, setSearchTerm, fetchProducts } = useProductStore();
+    const { categories, error, filterItem, setFilterItem, searchTerm, fetchProducts } = useProductStore();
     const isDropdownVisible = ref(false);
 
     onMounted(async () => {
