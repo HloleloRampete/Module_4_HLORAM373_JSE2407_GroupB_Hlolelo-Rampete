@@ -257,6 +257,11 @@ export default {
 ### FilterComponent.vue
 
 The `FilterComponent` provides dropdown filtering by categories and a search option for fuzzy searches.
+1. **State Management**: The filterItem state now relies on the query parameter filter. The component reads the initial filter value from route.query.filter and updates it in the URL whenever the user selects a different filter.
+
+2. **Dropdown Handling**: The dropdown visibility is controlled with a local isDropdownVisible ref, allowing the user to toggle the visibility of filter options.
+
+3. **Filter Change**: When a filter is selected, handleFilter updates the filterItem and emits the new filter value. It also updates the query parameter in the URL using router.replace.
 
 ```vue
 <template>
@@ -296,7 +301,10 @@ export default {
 
 ### SortComponent.vue
 
-The `SortComponent` provides sorting functionality by price.
+The `SortComponent` provides sorting functionality by price. 
+1. **State Management**: The sorting state is now synchronized with the sort query parameter. The component reads the initial sorting value from route.query.sort and updates it in the URL whenever the user selects a different sorting option.
+
+2. **Sorting Change**: When the sorting option is changed, handleSort updates the sorting state and emits the new sort value. It also updates the query parameter in the URL using router.replace.
 
 ```vue
 <template>
