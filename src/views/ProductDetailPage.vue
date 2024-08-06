@@ -32,7 +32,7 @@ export default {
     };
 
     const goBack = () => {
-      router.push('/');
+      router.go(-1); // Go back in history stack
     };
 
     onMounted(fetchProduct);
