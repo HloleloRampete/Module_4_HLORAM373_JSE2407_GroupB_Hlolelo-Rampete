@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start mt-3 mx-auto justify-center">
-      <FilterComponent :categories="categories" @filter="handleFilter" />
+      <FilterComponent />
       <SortComponent @sort="handleSort" />
     </div>
     <div v-if="loading">
@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import { useProductStore } from "@/composables/useProducts";
-import FilterComponent from "@/components/FilterComponent.vue";
-import SortComponent from "@/components/SortComponent.vue";
-import ProductList from "@/components/ProductList.vue";
+import { onMounted, computed } from 'vue';
+import { useProductStore } from '@/composables/useProducts';
+import FilterComponent from '@/components/FilterComponent.vue';
+import SortComponent from '@/components/SortComponent.vue';
+import ProductList from '@/components/ProductList.vue';
 
 export default {
   components: {
@@ -28,60 +28,44 @@ export default {
     ProductList,
   },
   setup() {
-    const {
-      products,
-      categories,
-      loading,
-      error,
-      fetchProducts,
-      fetchCategories,
-    } = useProductStore();
-    
-    const selectedCategory = ref("");
-    const searchQuery = ref("");
-    const selectedSort = ref("");
+    const { products, loading, error, fetchProducts, filterItem, searchTerm, sorting, setSorting } = useProductStore();
+
+    onMounted(async () => {
+      await fetchProducts();
+    });
+
+    const handleSort = (sortOption) => {
+      setSorting(sortOption);
+    };
 
     const filteredProducts = computed(() => {
       let filtered = products.value;
 
-      if (selectedCategory.value) {
-        filtered = filtered.filter(product => product.category === selectedCategory.value);
+      if (filterItem.value !== 'All categories') {
+        filtered = filtered.filter(product => product.category === filterItem.value);
       }
 
-      if (searchQuery.value) {
-        const query = searchQuery.value.toLowerCase();
+      if (searchTerm.value) {
+        const query = searchTerm.value.toLowerCase();
         filtered = filtered.filter(product =>
           product.title.toLowerCase().includes(query)
         );
       }
 
-      if (selectedSort.value) {
-        if (selectedSort.value === "priceAsc") {
-          filtered.sort((a, b) => a.price - b.price);
-        } else if (selectedSort.value === "priceDesc") {
-          filtered.sort((a, b) => b.price - a.price);
-        }
+      if (sorting.value === 'low') {
+        filtered = filtered.slice().sort((a, b) => a.price - b.price);
+      } else if (sorting.value === 'high') {
+        filtered = filtered.slice().sort((a, b) => b.price - a.price);
       }
 
       return filtered;
     });
 
-    const handleFilter = (category, query) => {
-      selectedCategory.value = category;
-      searchQuery.value = query;
-    };
-
-    const handleSort = (sortOption) => {
-      selectedSort.value = sortOption;
-    };
-
     return {
       products,
-      categories,
-      filteredProducts,
       loading,
       error,
-      handleFilter,
+      filteredProducts,
       handleSort,
     };
   },

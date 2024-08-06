@@ -1,5 +1,5 @@
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { ref, computed } from 'vue';
+import axios from 'axios';
 
 export function useProductStore() {
   const products = ref([]);
@@ -12,73 +12,50 @@ export function useProductStore() {
 
   const fetchProducts = async () => {
     loading.value = true;
-    error.value = null;
     try {
-      const response = await axios.get("https://fakestoreapi.com/products");
-      products.value = response.data; // axios automatically parses JSON
-      applyFilterAndSort();
+      const response = await axios.get('https://fakestoreapi.com/products');
+      products.value = response.data;
+      categories.value = Array.from(new Set(products.value.map(product => product.category)));
+      loading.value = false;
     } catch (err) {
-      error.value = "Failed to fetch products.";
-      console.error("Error fetching products:", err);
-    } finally {
+      error.value = 'Failed to fetch products';
       loading.value = false;
     }
   };
 
-  const fetchCategories = async () => {
-    loading.value = true;
-    error.value = null;
-    try {
-      const response = await axios.get("https://fakestoreapi.com/products/categories");
-      categories.value = response.data; // axios automatically parses JSON
-    } catch (err) {
-      error.value = "Failed to fetch categories.";
-      console.error("Error fetching categories:", err);
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const applyFilterAndSort = () => {
-    let filteredProducts = [...products.value];
-
-    if (filterItem.value !== 'All categories') {
-      filteredProducts = filteredProducts.filter(product => product.category === filterItem.value);
-    }
-
-    if (searchTerm.value) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.title.toLowerCase().includes(searchTerm.value.toLowerCase())
-      );
-    }
-
-    if (sorting.value === 'low') {
-      filteredProducts.sort((a, b) => a.price - b.price);
-    } else if (sorting.value === 'high') {
-      filteredProducts.sort((a, b) => b.price - a.price);
-    }
-
-    products.value = filteredProducts;
-  };
-
-  const setFilterItem = (category) => {
-    filterItem.value = category;
-    applyFilterAndSort();
+  const setFilterItem = (item) => {
+    filterItem.value = item;
   };
 
   const setSearchTerm = (term) => {
     searchTerm.value = term;
-    applyFilterAndSort();
   };
 
-  const setSorting = (newSorting) => {
-    sorting.value = newSorting;
-    applyFilterAndSort();
+  const setSorting = (sortOption) => {
+    sorting.value = sortOption;
   };
 
-  onMounted(() => {
-    fetchProducts();
-    fetchCategories();
+  const filteredProducts = computed(() => {
+    let filtered = products.value;
+
+    if (filterItem.value !== 'All categories') {
+      filtered = filtered.filter(product => product.category === filterItem.value);
+    }
+
+    if (searchTerm.value) {
+      const query = searchTerm.value.toLowerCase();
+      filtered = filtered.filter(product =>
+        product.title.toLowerCase().includes(query)
+      );
+    }
+
+    if (sorting.value === 'low') {
+      filtered = filtered.slice().sort((a, b) => a.price - b.price);
+    } else if (sorting.value === 'high') {
+      filtered = filtered.slice().sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
   });
 
   return {
@@ -88,11 +65,11 @@ export function useProductStore() {
     error,
     filterItem,
     searchTerm,
-    sorting,
     fetchProducts,
-    fetchCategories,
     setFilterItem,
     setSearchTerm,
     setSorting,
+    sorting,
+    filteredProducts,
   };
 }
